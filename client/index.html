@@ -101,7 +101,21 @@
                 <tr>
                     <td class="currencies">${currency}</td>
                     <td id=${currency} class="rates">${rates[currency]}</td>
-                </tr>
+                </tr>RSERAHBISAH$ git checkout DEVELOPMENT
+Switched to branch 'DEVELOPMENT'
+Your branch is up to date with 'origin/DEVELOPMENT'.
+arnold@AHE-Linux:~/Desktop/Phase2/Week1/Thursday/EVENTERSERAHBISAH$ git pull
+remote: Enumerating objects: 29, done.
+remote: Counting objects: 100% (29/29), done.
+remote: Compressing objects: 100% (7/7), done.
+remote: Total 15 (delta 5), reused 13 (delta 5), pack-reused 0
+Unpacking objects: 100% (15/15), done.
+From https://github.com/GROUP-BISA/EVENTERSERAHBISAH
+ * [new branch]      logindansms -> origin/logindansms
+   1e22a6b..81027cf  master      -> origin/master
+ * [new branch]      zainal      -> origin/zainal
+Already up to date.
+arnold@AHE-Linux:~/Desktop/Phase2/Week1/Thursday/EVENTER
                 `)
             }
         }).fail(err =>{
@@ -137,7 +151,63 @@
             <input type="submit" value="Convert!">
 
             <input readonly value="" id="result">
+<<<<<<< HEAD
     </form>
 </body>
 </html>
 >>>>>>> 5f16171aad70a6ecf63ba26d7a926592a46e5870
+=======
+    </form> 
+
+    <script>
+        $('.headers').hide()
+        $('.converting').hide()
+
+        $('.converting').submit(function(event){
+            event.preventDefault()
+            let from = $('#convertFrom').val()
+            let to = $('#convertedTo').val()
+            let amount = $('#amount').val()
+
+            $.ajax({
+                method:"POST",
+                data: {from, to, amount},
+                url: `http://localhost:3000/rates/convert?to=${to}&from=${from}&amount=${amount}`,
+                // qs:{to: to, from: from, amount: amount},
+                dataType: `json`        
+            }).done(converted =>{
+                $('#result').val(converted)
+            }).fail(err =>{
+                alert(err)
+            })
+        })
+
+        function recaptcha_callback(){
+            $('.converting').show()
+            $('.captcha').hide()
+        }
+
+        function nowRate(){
+            $.ajax({
+                url: "http://localhost:3000/rates",
+                method: "GET"
+            }).done(rates => {
+                for(currency in rates){
+                    $(".tableRates").append(`
+                    <tr>
+                        <td class="currencies">${currency}</td>
+                        <td id=${currency} class="rates">${rates[currency]}</td>
+                    </tr>
+                    `)
+                }
+            }).fail(err =>{
+                alert(err.message)
+            })
+        }
+        
+        
+    </script>
+    
+</body>
+</html>
+>>>>>>> fixerIo API done
