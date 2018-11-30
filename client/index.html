@@ -139,5 +139,60 @@
 
             <input readonly value="" id="result">
     </form> 
+<<<<<<< HEAD
 </body>
 </html>
+=======
+
+    <script>
+        $('.headers').hide()
+        $('.converting').hide()
+
+        $('.converting').submit(function(event){
+            event.preventDefault()
+            let from = $('#convertFrom').val()
+            let to = $('#convertedTo').val()
+            let amount = $('#amount').val()
+
+            $.ajax({
+                method:"POST",
+                data: {from, to, amount},
+                url: `http://localhost:3000/rates/convert?to=${to}&from=${from}&amount=${amount}`,
+                // qs:{to: to, from: from, amount: amount},
+                dataType: `json`        
+            }).done(converted =>{
+                $('#result').val(converted)
+            }).fail(err =>{
+                alert(err)
+            })
+        })
+
+        function recaptcha_callback(){
+            $('.converting').show()
+            $('.captcha').hide()
+        }
+
+        function nowRate(){
+            $.ajax({
+                url: "http://localhost:3000/rates",
+                method: "GET"
+            }).done(rates => {
+                for(currency in rates){
+                    $(".tableRates").append(`
+                    <tr>
+                        <td class="currencies">${currency}</td>
+                        <td id=${currency} class="rates">${rates[currency]}</td>
+                    </tr>
+                    `)
+                }
+            }).fail(err =>{
+                alert(err.message)
+            })
+        }
+        
+        
+    </script>
+    
+</body>
+</html>
+>>>>>>> 6a3e543ee8b750493a6822226bc5c0c2bd5c01c5

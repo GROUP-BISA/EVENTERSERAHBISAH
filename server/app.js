@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/event', eventRouter);
+
 app.use('/', indexRouter);
 app.use('/rates', ratesRouter);
 
