@@ -2,13 +2,45 @@
 <html>
 <head>
     <style >
-      #kanan {
-        float: right;
+    *{
+      margin: 0;
+      padding: 0;
+    }
+      body{
+        /* z-index: auto; */
+        /* padding-top: 40px; */
+        background-color: #bfd2f2;
       }
+    #navbar ul {
+       width: 100%;
+       background-color: #f1f1f1;
+       height: 8%; /* Full height */
+       position: fixed; /* Make it stick, even on scroll */
+       overflow: auto; /* Enable scrolling if the sidenav has too much content */
+     }
+
+   * {
+      box-sizing: border-box;
+    }
+    .column {
+        float: left;
+        width: 33.33%;
+        padding: 10px;
+        height: 300px; /* Should be removed. Only for demonstration */
+    }
+    #kanan {
+      float: right;
+    }
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
     </style>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Get the most updated conversion rate here!</title>
+    <title>TERSERAH BISA !!!!!!!!!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <script src="main.js"></script>
@@ -18,55 +50,69 @@
     crossorigin="anonymous"></script>
     <script src="http://data.fixer.io/api/latest?access_key=4e79181b580a9c891c1799aa1b7e6f95"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '{your-app-id}',
-          cookie     : true,
-          xfbml      : true,
-          version    : '{api-version}'
-        });
-
-        FB.AppEvents.logPageView();
-
-      };
-
-        function checkLoginState() {
-          FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
-          });
-        }
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "https://connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-
-    </script>
     <nav id="navbar">
-        <div>
+      <div>
+        <ul>
+          <li>
             <a href="/" class="here">TERSERAHBISA</a>
             <a href="/www.google.com" >About</a>
             <a href="/contact.html" >Contact Us</a>
-            <div id="kanan">
-              <button id="logout" type="submit">LOGOUT</button>
-            </div>
-        </div>
+          </li>
+          <div id="kanan">
+            <button id="logout" type="submit">LOGOUT</button>
+          </div>
+        </ul>
+      </div>
     </nav>
 </head>
 <body>
-    <div>
-        <form id="searchForm">
+                                                                                                                                                                                                                <br><br><br><br><br><br><br><br>
+  <div id="row" class="row">
+      <div class="column">
+        <div class="table">
+          <form id="searchForm">
             <input type="text" placeholder="Search" aria-label="Search" id="search">
             <button type="submit">Search</button>
-        </form>
-    </div>
-    <div id="events">
+          </form>
+        </div>
+        <div id="events">
 
-    </div>
+        </div>
+      </div>
+      <div class="column">
+
+            <h3 onclick="nowRate()" class="converting">Today's Rate</h3>
+            <table class="tableRates">
+                <tr>
+                    <th class="headers">Currency</th>
+                    <th class="headers">Rates</th>
+                </tr>
+            </table>
+
+
+            <form class="captcha">
+                <div class="g-recaptcha" data-sitekey="6Ld_1n0UAAAAAOQqlzCQVtUqWtxaaoLG_mHWmxU-" data-callback="recaptcha_callback"></div>
+            </form>
+
+            <h3 class="converting">Convert</h3>
+            <form method="post" class="converting">
+                    From:<br>
+                    <input type="string" value="EUR" id="convertFrom"><br>
+                    To:<br>
+                    <input type="string" value="EUR" id="convertedTo"><br>
+                    Amount:<br>
+                    <input type="integer" id="amount"><br>
+                    <input type="submit" value="Convert!">
+
+                    <input readonly value="" id="result">
+            </form>
+      </div>
+      <div class="column">
+
+      </div>
+
+
+    <div>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
 <script>
 
@@ -78,7 +124,8 @@
         .done(events => {
 
             $.each(events.events, function(index, value) {
-                $('#events').append(`<h4><strong>${value.name.text}</strong></h4>
+                $('#events').append(`<label>${value.name.text}</label></br>
+                  <button onclick="detail('${value.name}', '${value.description}', '${value.stargazers_count}')">Show Detail >>></button>
                                     <hr>
                                     `)
             })
@@ -97,7 +144,7 @@
         .done(events => {
             $('#events').html('')
             $.each(events.events, function(index, value) {
-                $('#events').append(`<h4><strong>${value.name.text}</strong></h4>
+                $('#events').append(`<label><strong>${value.name.text}</strong></label>
 
                                     <hr>
                                     `)
@@ -107,21 +154,17 @@
 
     showAllEvents()
     $('#events').show()
-
-     $('.headers').hide()
+    $('.headers').hide()
     $('.converting').hide()
-
     $('.converting').submit(function(event){
         event.preventDefault()
         let from = $('#convertFrom').val()
         let to = $('#convertedTo').val()
         let amount = $('#amount').val()
-
         $.ajax({
             method:"POST",
             data: {from, to, amount},
             url: `http://localhost:3000/rates/convert?to=${to}&from=${from}&amount=${amount}`,
-            // qs:{to: to, from: from, amount: amount},
             dataType: `json`
         }).done(converted =>{
             $('#result').val(converted)
@@ -154,39 +197,7 @@
     }
 
 </script>
-<button onclick="detail('${value.name}', '${value.description}', '${value.stargazers_count}')">Show Detail >>></button>
-  <div id="fblogin">
-        <fb:login-button
-          scope="public_profile,email"
-          onlogin="checkLoginState();">
-        </fb:login-button>
-  </div>
-    <h3 onclick="nowRate()" class="converting">Today's Rate</h3>
 
-    <table class="tableRates">
-        <tr>
-            <th class="headers">Currency</th>
-            <th class="headers">Rates</th>
-        </tr>
-    </table>
-
-
-    <form class="captcha">
-        <div class="g-recaptcha" data-sitekey="6Ld_1n0UAAAAAOQqlzCQVtUqWtxaaoLG_mHWmxU-" data-callback="recaptcha_callback"></div>
-    </form>
-
-    <h3 class="converting">Convert</h3>
-    <form method="post" class="converting">
-            From:<br>
-            <input type="string" value="EUR" id="convertFrom"><br>
-            To:<br>
-            <input type="string" value="EUR" id="convertedTo"><br>
-            Amount:<br>
-            <input type="integer" id="amount"><br>
-            <input type="submit" value="Convert!">
-
-            <input readonly value="" id="result">
-    </form>
 
     <div id="buy">
 
