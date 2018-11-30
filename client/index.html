@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -178,3 +179,147 @@
     </script>
   </body>
 </html> -->
+=======
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Get the most updated conversion rate here!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+    <script src="http://data.fixer.io/api/latest?access_key=4e79181b580a9c891c1799aa1b7e6f95"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+</head>
+<body>
+    <div>
+        <form id="searchForm">
+            <input type="text" placeholder="Search" aria-label="Search" id="search">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div id="events">
+
+    </div>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
+<script>
+
+    function showAllEvents() {
+        $.ajax({
+            url: 'http://localhost:3000/event',
+            type: 'get'
+        })
+        .done(events => {
+
+            $.each(events.events, function(index, value) {
+                $('#events').append(`<h4><strong>${value.name.text}</strong></h4>
+                                    <hr>
+                                    `)
+            })
+        })
+        .fail(err => {
+            console.log(err.message)
+        })
+    }
+
+    $('#searchForm').on('submit', function(event) {
+        event.preventDefault()
+        $.ajax({
+            url: 'http://localhost:3000/event/search/' + $('#search').val(),
+            type: 'get' 
+        })
+        .done(events => {
+            $('#events').html('')
+            $.each(events.events, function(index, value) {
+                $('#events').append(`<h4><strong>${value.name.text}</strong></h4>
+                                    
+                                    <hr>
+                                    `)
+            })
+        })
+    })
+   
+    showAllEvents()
+    $('#events').show()
+
+     $('.headers').hide()
+    $('.converting').hide()
+
+    $('.converting').submit(function(event){
+        event.preventDefault()
+        let from = $('#convertFrom').val()
+        let to = $('#convertedTo').val()
+        let amount = $('#amount').val()
+
+        $.ajax({
+            method:"POST",
+            data: {from, to, amount},
+            url: `http://localhost:3000/rates/convert?to=${to}&from=${from}&amount=${amount}`,
+            // qs:{to: to, from: from, amount: amount},
+            dataType: `json`        
+        }).done(converted =>{
+            $('#result').val(converted)
+        }).fail(err =>{
+            alert(err)
+        })
+    })
+
+    function recaptcha_callback(){
+        $('.converting').show()
+        $('.captcha').hide()
+    }
+
+    function nowRate(){
+        $.ajax({
+            url: "http://localhost:3000/rates",
+            method: "GET"
+        }).done(rates => {
+            for(currency in rates){
+                $(".tableRates").append(`
+                <tr>
+                    <td class="currencies">${currency}</td>
+                    <td id=${currency} class="rates">${rates[currency]}</td>
+                </tr>
+                `)
+            }
+        }).fail(err =>{
+            alert(err.message)
+        })
+    }
+
+</script>
+<button onclick="detail('${value.name}', '${value.description}', '${value.stargazers_count}')">Show Detail >>></button>
+
+    <h3 onclick="nowRate()" class="converting">Today's Rate</h3>
+    
+    <table class="tableRates">
+        <tr>
+            <th class="headers">Currency</th>
+            <th class="headers">Rates</th>
+        </tr>
+    </table>
+
+    
+    <form class="captcha">
+        <div class="g-recaptcha" data-sitekey="6Ld_1n0UAAAAAOQqlzCQVtUqWtxaaoLG_mHWmxU-" data-callback="recaptcha_callback"></div>
+    </form>
+    
+    <h3 class="converting">Convert</h3>
+    <form method="post" class="converting">
+            From:<br>
+            <input type="string" value="EUR" id="convertFrom"><br>
+            To:<br>
+            <input type="string" value="EUR" id="convertedTo"><br>
+            Amount:<br>
+            <input type="integer" id="amount"><br>
+            <input type="submit" value="Convert!">
+
+            <input readonly value="" id="result">
+    </form> 
+</body>
+</html>
+>>>>>>> 5f16171aad70a6ecf63ba26d7a926592a46e5870

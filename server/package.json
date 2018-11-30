@@ -11,9 +11,20 @@
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
+<<<<<<< HEAD
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "morgan": "~1.9.0"
+=======
+    "dotenv": "^6.1.0",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "jade": "~1.11.0",
+    "live-server": "^1.2.1",
+    "mongodb": "^3.1.10",
+    "mongoose": "^5.3.14",
+    "morgan": "~1.9.0",
+>>>>>>> 5f16171aad70a6ecf63ba26d7a926592a46e5870
   }
 }
