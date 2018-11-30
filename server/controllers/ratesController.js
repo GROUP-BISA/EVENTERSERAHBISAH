@@ -1,4 +1,3 @@
-const request = require('request')
 const axios = require('axios')
 
 module.exports={
@@ -14,7 +13,7 @@ module.exports={
         }).catch(err =>{
             res.status(500).json({
                 message: "Error in getting allRates",
-                details: err.message
+                details: err.response.data.message
             })
         })
     },
@@ -42,7 +41,7 @@ module.exports={
         }).catch(err =>{
             res.status(500).json({
                 message:"Error in converting",
-                detail: err.message
+                detail: err.response.data.message
             })
         })
     }
