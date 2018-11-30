@@ -23,6 +23,7 @@ mongoose.connect(`mongodb://zainal:zainal123@ds045604.mlab.com:45604/groupprojec
 });
 
 app.use('/event', eventRouter);
+
 app.use('/', indexRouter);
 app.use('/rates', ratesRouter);
 app.use('/api-maps', apiMapsRouter);
